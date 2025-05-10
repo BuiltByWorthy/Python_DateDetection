@@ -1,17 +1,24 @@
 import re
 
-date_str = "21/12/2025"
+date_str = "31/12/2025"
 
 regex = re.compile(r"""
-                   (0([1-9])|[12](\d)|3([01])){1}   # DD
+                   (?P<day>0[1-9]|[12]\d|3[01])    # Day: 01–31
                    /
-                   (0([1-9])|1([0-2])){1}              # MM
+                   (?P<month>0[1-9]|1[0-2])        # Month: 01–12
                    /
-                   [12]{1}\d{3}                        # YYYY
+                   (?P<year>[12]\d{3})             # Year: 1000–2999
                   """, re.VERBOSE)
 
 
 match_obj = regex.search(date_str)
 match = match_obj.group() if match_obj else "No date found!"
+day, month, year = match_obj.groups() if match_obj else "No date found!"
+# day = match_obj.group("day") if match_obj else "No date found!"
+# month = match_obj.group("month") if match_obj else "No date found!"
+# year = match_obj.group("year") if match_obj else "No date found!"
 
 print(f"Date: {match}")
+print(f"Day: {day}")
+print(f"Month: {month}")
+print(f"Year: {year}")
