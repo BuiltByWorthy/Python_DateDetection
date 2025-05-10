@@ -1,6 +1,5 @@
 import re
-
-date_str = "31/12/2025"
+from datetime import datetime
 
 regex = re.compile(r"""
                    (?P<day>0[1-9]|[12]\d|3[01])    # Day: 01–31
@@ -10,15 +9,19 @@ regex = re.compile(r"""
                    (?P<year>[12]\d{3})             # Year: 1000–2999
                   """, re.VERBOSE)
 
+date_str = "31/12/2025"
 
-match_obj = regex.search(date_str)
-match = match_obj.group() if match_obj else "No date found!"
-day, month, year = match_obj.groups() if match_obj else "No date found!"
-# day = match_obj.group("day") if match_obj else "No date found!"
-# month = match_obj.group("month") if match_obj else "No date found!"
-# year = match_obj.group("year") if match_obj else "No date found!"
+match_obj = regex.fullmatch(date_str)
 
-print(f"Date: {match}")
-print(f"Day: {day}")
-print(f"Month: {month}")
-print(f"Year: {year}")
+if match_obj:
+    day = int(match_obj.group("day"))
+    month = int(match_obj.group("month"))
+    year = int(match_obj.group("year"))
+
+    try:
+        test_date = datetime(year, month, day)
+        print(f"{date_str} is a valid date!")
+    except ValueError:
+        print(f"{date_str} is an invalid date!")
+else:
+    print(f"{date_str} is in the incorrect format.")
